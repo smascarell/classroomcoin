@@ -295,7 +295,27 @@
               </div>
             </div>
             <!-- Page Title Header Ends-->
-            <?php printf('%s',$_SERVER['DOCUMENT_ROOT']); ?>
+            <div class="row">
+              <div class="col-md-12 grid-margin">
+                <div class="card">
+                 <div class="card-body">
+                   <div class="col-lg-3 col-md-6">
+                    <?php
+                      $comportamientosJSON = 'usuarios/comportamientos.json';
+                      $comportamientos = file_get_contents($comportamientosJSON);
+                      print_r($comportamientos);
+                    ?>
+                   </div>
+                   <div class="col-lg-3 col-md-6">
+2
+                   </div>
+                   <div class="col-lg-3 col-md-6">
+3
+                   </div>
+                 </div>
+                </div>
+              </div>
+            </div>
             <div class="row">
               <div class="col-md-12 grid-margin">
                 <div class="card">
@@ -815,9 +835,7 @@
           <!-- partial:partials/_footer.html -->
           <footer class="footer">
             <div class="container-fluid clearfix">
-              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2019 <a href="http://www.bootstrapdash.com/" target="_blank">Bootstrapdash</a>. All rights reserved.</span>
-              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i>
-              </span>
+
             </div>
           </footer>
           <!-- partial -->

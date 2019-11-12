@@ -42,7 +42,7 @@
         <?php include($_SERVER['DOCUMENT_ROOT'].'/classroomcoin/database.php');
 
           $db = new Database();
-          $sql = 'SELECT * FROM rol';
+          $sql = 'SELECT * FROM cursos';
           $result = $db->Query($sql);
           $db->Close();
           ?>
@@ -98,7 +98,7 @@
     <!-- partial:../../partials/_footer.html -->
     <footer class="footer">
       <div class="container-fluid clearfix">
-        
+
       </div>
     </footer>
     <!-- partial -->

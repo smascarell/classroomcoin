@@ -75,13 +75,7 @@
       <div class="collapse" id="ui-clases">
         <ul class="nav flex-column sub-menu">
           <li class="nav-item">
-            <a class="nav-link" href="#">Admin</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Alumnos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Profesores</a>
+            <a class="nav-link" href="../clases">Clases</a>
           </li>
         </ul>
       </div>

@@ -18,7 +18,6 @@ $(document).ready(function(){
 	});
 
 
-
 	$("#click_admin").click(function(){
 		$('#adminlogin').slideToggle();
 
@@ -69,8 +68,15 @@ function eliminarRecompensa(id) {
 	});
 }
 function editarRecompensa(id){
-	console.log('editarRecompensa : ' + id);
 	location.href = 'editar.php?id='+id;
+}
+
+function editarClase(clase_id) {
+	location.href = 'editar.php?id='+clase_id;
+}
+
+function verAlumnosClase(clase_id) {
+	// location.href =
 }
 
 function asignar(alumno) {
@@ -84,5 +90,5 @@ function asignar(alumno) {
 }
 
 function test(comportamiento, usuario) {
-	alert('Asignar ' + comportamiento + ' a ' + usuario);
+	location.href = 'usuario_comportamiento.php?comportamiento_id='+comportamiento+'&usuario_id='+usuario;
 }

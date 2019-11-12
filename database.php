@@ -9,12 +9,13 @@ class Database
     private $_password = "gQX5qZSbL0bhITxO";
     private $_database = "CCDB";
 
-    // Establish connection to database, when class is instantiated
+    // Establecer conexión con la base de datos.
+
     public function __construct()
     {
         $this->_conexion = new mysqli($this->_host, $this->_username, $this->_password, $this->_database);
         if (mysqli_connect_errno()) {
-            echo "Connection Failed: " . mysqli_connect_errno();
+            echo "Fallo en la conexión: " . mysqli_connect_errno();
             exit();
         }
     }
@@ -22,29 +23,24 @@ class Database
     // Enviar query a la conexión y retorna un mysqli_result
     public function Query($sql)
     {
-        //$this->_result = $this->_conexion->query($sql) or die(mysqli_error($this->_result));
-
         $this->_result = mysqli_query($this->GetConn(),$sql);
-        //$this->_numRows = mysqli_num_rows($this->_result);
         return $this->_result;
-        //return (mysqli_query($this->GetConn(),$sql));
     }
 
-    // Inserts into databse
+    // Inserciones en la base de datos
     public function UpdateDb($sql)
     {
         $this->_result = $this->_conexion->query($sql) or die(mysqli_error($this->_result));
-        //$this->_result = mysqli_query($this->GetConn(),$sql) or die(mysqli_error($this->_result));
         return $this->_result;
     }
 
-    // Return the number of rows
+    // Devuelve el número de líneas
     public function NumRows()
     {
         return $this->_numRows;
     }
 
-    // Fetchs the rows and return them
+    // Devuelve los datos de la última llamada.
     public function Rows()
     {
         $rows = array();
@@ -55,13 +51,13 @@ class Database
         return $rows;
     }
 
-    // Used by other classes to get the connection
+    // Usada por otras clases para conseguir la conexión.
     public function GetConn()
     {
         return $this->_conexion;
     }
 
-    // Securing input data
+    // Inserción segura de datos
     public function SecureInput($value)
     {
         return mysqli_real_escape_string($this->_conexion, $value);

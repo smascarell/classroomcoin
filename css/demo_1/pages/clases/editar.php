@@ -1,11 +1,14 @@
 <?php
 
   session_start();
-  $usuario = unserialize($_SESSION['objeto']);
+  //$usuario = unserialize($_SESSION['objeto']);
   include($_SERVER['DOCUMENT_ROOT'].'/classroomcoin/database.php');
   $db = new Database();
   $conn = $db->GetConn();
-  $id = $usuario['id'];
+  $id = $_GET['id'];
+  $sql = "SELECT * from clases WHERE id= $id";
+  $result = $db->Query($sql);
+  $clase = mysqli_fetch_assoc($result);
 ?>
 
 <!DOCTYPE html>
@@ -195,87 +198,67 @@
               <div class="col-12 grid-margin">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">Editar nuevo usuario</h4>
+                    <h1>Clase de <?php echo $clase['nombre']; ?> </h1>
                     <form class="form-sample" method="POST" action="actualizar.php">
-                      <p class="card-description"> Información Personal</p>
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Nombre</label>
+                            <label class="col-sm-3 col-form-label">Clase</label>
                             <div class="col-sm-9">
-                              <input type="text" class="form-control" name="nombre" value="<?php echo $usuario['nombre'] ?>" />
+                              <input type="text" class="form-control" name="nombre" value="<?php echo $clase['nombre'] ?>" />
                             </div>
                           </div>
                         </div>
                       </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label">Apellidos</label>
-                              <div class="col-sm-9">
-                                <input type="text" class="form-control" name="apellidos" value="<?php echo $usuario['apellidos'] ?>" />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label">Email</label>
-                              <div class="col-sm-9">
-                                <input type="text" class="form-control" name="email" value="<?php echo $usuario['email'] ?>" />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Rol</label>
+                            <label class="col-sm-3 col-form-label">Grupo</label>
                             <div class="col-sm-9">
-                              <select class="form-control" name="rol">
+                              <input type="text" class="form-control" name="grupo" value="<?php echo $clase['grupo'] ?>" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Profesor</label>
+                            <div class="col-sm-9">
+                              <select class="form-control" name="profesor_id">
                                 <?php
-                                $sql = "SELECT * FROM rol";
-                                $roles = $db->Query($sql);
-                                //$sql = "SELECT rol FROM usuarios WHERE id = $id";
-                                $select_attribute = '';
-                                while ($row = mysqli_fetch_assoc($roles)) {
-                                  unset($select_attribute);
-                                  if ( $row['id'] === $usuario['rol'] ) {
+
+                                //Obtener todos los usuarios que son profesores
+
+                                $sql = "SELECT id, rol, nombre, apellidos
+                                        FROM usuarios
+                                        WHERE rol IN
+                                          (SELECT `id`
+                                            FROM rol
+                                            WHERE nombre LIKE '%profesor%')";
+                                $profesores = $db->Query($sql);
+
+                                //Obtener el profesor de la clase actual.
+
+                                $sql = "SELECT profesor_id
+                                        FROM clases WHERE id = $id";
+                                $res = $db->Query($sql);
+                                $profesor_clase = mysqli_fetch_assoc($res);
+                                while ($profesor = mysqli_fetch_assoc($profesores)) {
+                                  $select_attribute = '';
+                                  if ( $profesor['id'] === $clase['profesor_id'] ) {
                                     $select_attribute = ' selected';
                                   }
-                                  echo '<option value='.$row['id']  . $select_attribute . ">" . $row['nombre'] . '</option>';
-                                }
-                                ?>
+                                  echo '<option value='. $profesor['id'] . $select_attribute . ">" . $profesor['nombre'] . " " . $profesor['apellidos'] . '</option>';
+                                }?>
                               </select>
                             </div>
                           </div>
                         </div>
                       </div>
-
                       <div class="row">
                         <div class="col-md-6">
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Usuario</label>
-                            <div class="col-sm-9">
-                              <input type="text" class="form-control" name="usuario" value="<?php echo $usuario['usuario'] ?>" disabled />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Password</label>
-                            <div class="col-sm-9">
-                              <input type="password" class="form-control" name="password" value="<?php echo $usuario['password'] ?>" disabled />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <button name="actualizar" type="submit" class="btn btn-success mr-2">Guardar</button>
+                          <button name="actualizar" type="submit" class="btn btn-success mr-2">Actualizar</button>
                           <input type="hidden" name="id" value="<?php echo $id ?>">
                           <input type="button" value="Cancelar" onclick="javascript:history.go(-1)" name="cancelar" class="btn btn-light"></input>
                         </div>
